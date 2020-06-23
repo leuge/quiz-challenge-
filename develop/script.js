@@ -1,16 +1,45 @@
-var quizContainer = document.getElementById('quiz');
-var startButton = document.getElementById('start');
-var submitButton = document.getElementById('submit');
+var quizContainer = document.querySelector('quiz');
+var startButton = document.querySelector('start');
+var submitButton = document.querySelector('submit');
 var nameInput = document.querySelector("#name");
 var signUpButton = document.querySelector("#sign-up");
 var msgDiv = document.querySelector("#msg");
 var userNameSpan = document.querySelector("#user-name");
 
-startButton.addEventListener("click", function (event) {
-    event.preventDefault();
-})
+startButton.addEventListener('click', buildQuiz);
 
-function buildQuiz(){}
+function buildQuiz(){
+    //variable to store the HTML output
+    var output = [];
+
+    //for each question...
+    myQuestions.forEach(
+        (currentQuestion, questionNumber) => {
+
+            //variable to store the list of possible answers
+            var answers = [];
+
+            for(number in currentQuestion.answers){
+
+                //..add an html radio button
+                answers.push(
+                    <label>
+                        <input type="radio" name="question${questionNumber}" value="{number}"></input>
+                        ${number} :
+                        ${currentQuestion.answers[number]}
+                    </label>
+                );
+            }
+            //add question and output answers
+            output.push(
+                <div class="question"> ${currentQuestion.question}</div>
+                <div class="answers"> ${answers.join('')}</div>
+            );
+        }
+    );
+    //combine output list into string of HTML
+    quizContainer.innerHTML = output.join('');
+}
 
 function showResults(){}
 
@@ -38,8 +67,6 @@ function renderLastRegistered() {
     var name = window.localStorage.getItem('name');
     userNameSpan.textContent = name;
 };
-
-    
 
 signUpButton.addEventListener("click", function(event) {
     event.preventDefault();
